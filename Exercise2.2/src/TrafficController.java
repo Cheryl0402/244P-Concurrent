@@ -1,37 +1,69 @@
 public class TrafficController {
-    Boolean isPresent = false;
+    private Boolean hasCar;
 
     TrafficController(){
-        isPresent = false;
+        hasCar = false;
     }
 
-    public synchronized void enterLeft() {
+    public synchronized void enterLeft(){
+        // while there is no car, enter the bridge and set the condition to true.
+        // while there is car, hasCar is true, then need to wait.
+//        try{
+//            while(hasCar){
+//                Thread.sleep(5000);
+//            }
+//            hasCar = true;
+//        }catch(InterruptedException e){
+//            e.printStackTrace();
+//        }
+
         try{
-            while(isPresent){
-                Thread.sleep(100);
+            while(hasCar){
+                wait();
             }
-            isPresent = true;
+            hasCar = true;
+
         }catch (InterruptedException e){
             e.printStackTrace();
         }
+
+
     }
 
-    public synchronized void enterRight() {
+    public synchronized void enterRight(){
+        // while there is no car, enter the bridge and set the condition to true.
+        // while there is car, hasCar is true, then need to wait.
+//        try{
+//            while(hasCar){
+//               Thread.sleep(5000);
+//            }
+//            hasCar = true;
+//        }catch(InterruptedException e){
+//            e.printStackTrace();
+//        }
+
+
         try{
-            while(isPresent){
-                Thread.sleep(100);
+            while(hasCar){
+                wait();
             }
-            isPresent = true;
-        }catch(InterruptedException e){
+            hasCar = true;
+
+        }catch (InterruptedException e){
             e.printStackTrace();
         }
+
     }
 
-    public void leaveLeft() {
-        isPresent = false;
+    public synchronized void leaveLeft() {
+        //if left, set the condition to false, hasCar becomes false, other cars can enter the bridge
+        hasCar = false;
+        notify();
     }
-    public void leaveRight() {
-        isPresent = false;
+    public synchronized void leaveRight() {
+        //if left, set the condition to false, hasCar becomes false, other cars can enter the bridge
+        hasCar = false;
+        notify();
     }
 
 }
